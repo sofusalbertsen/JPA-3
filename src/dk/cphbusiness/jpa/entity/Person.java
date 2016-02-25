@@ -6,17 +6,21 @@
 package dk.cphbusiness.jpa.entity;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author sofus
  */
+//@MappedSuperclass // If you do not want your super-class to get a table in your database.
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Person implements Serializable {
@@ -26,9 +30,9 @@ public abstract class Person implements Serializable {
     private String lastName;
     private String email;
     private String mobilePhone;
-    private String address;
-    private String city;
-    private String postalCode;
+    
+    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private Address address;
 
     public String getFirstName() {
         return firstName;
@@ -62,29 +66,6 @@ public abstract class Person implements Serializable {
         this.mobilePhone = mobilePhone;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
 
     public String getUsername() {
         return username;
@@ -93,5 +74,12 @@ public abstract class Person implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
-    
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 }
